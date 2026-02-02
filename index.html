@@ -1,1 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanye West Tracker - Unreleased & Rare Music Archive</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            background: #000000;
+            font-family: "Courier New", Courier, monospace;
+            color: #00ff00;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border: 3px solid #00ff00;
+            padding: 20px;
+            box-shadow: 0 0 20px #00ff00;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px dashed #00ff00;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            text-shadow: 2px 2px #ff0000;
+            animation: flicker 3s infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .subtitle {
+            color: #ffff00;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+
+        .marquee {
+            background: #ff0000;
+            color: #ffffff;
+            padding: 10px;
+            margin: 20px 0;
+            font-weight: bold;
+            overflow: hidden;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: scroll 20s linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes scroll {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background: #000;
+            padding: 15px;
+            margin: 20px 0;
+            border: 2px solid #ffff00;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 10px;
+            min-width: 150px;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            color: #ff00ff;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            color: #00ffff;
+            font-size: 0.9em;
+        }
+
+        .era-section {
+            margin: 30px 0;
+            border: 2px solid #00ffff;
+            padding: 20px;
+            background: #0a0a0a;
+        }
+
+        .era-title {
+            font-size: 1.8em;
+            color: #ff00ff;
+            margin-bottom: 15px;
+            text-decoration: underline;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .era-dates {
+            color: #ffff00;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+
+        .song-list {
+            list-style: none;
+        }
+
+        .song-item {
+            background: #000;
+            margin: 10px 0;
+            padding: 12px;
+            border-left: 4px solid #00ff00;
+            transition: all 0.3s;
+        }
+
+        .song-item:hover {
+            background: #222;
+            border-left-color: #ff00ff;
+            transform: translateX(5px);
+        }
+
+        .song-title {
+            color: #00ffff;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .song-details {
+            color: #aaa;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.75em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .status-full { background: #00ff00; color: #000; }
+        .status-snippet { background: #ffff00; color: #000; }
+        .status-confirmed { background: #ff00ff; color: #fff; }
+        .status-unavailable { background: #ff0000; color: #fff; }
+        .status-partial { background: #ff8800; color: #000; }
+
+        .icon {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+
+        .star { color: #ffff00; }
+        .trophy { color: #ffd700; }
+        .gem { color: #00ffff; }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px dashed #00ff00;
+            color: #888;
+        }
+
+        .counter {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px;
+            background: #000;
+            border: 2px solid #00ff00;
+        }
+
+        a {
+            color: #00ffff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #ff00ff;
+            text-decoration: underline;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: #000;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: "Courier New", Courier, monospace;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #00ff00;
+            color: #000;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8em; }
+            .stats { flex-direction: column; }
+            .era-title { font-size: 1.4em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎵 KANYE WEST TRACKER 🎵</h1>
+            <div class="subtitle">~ Unreleased, Lost & Rare Music Archive ~</div>
+            <div class="counter">
+                👁️ You are visitor #<span style="color: #ff0000;">999,999</span>
+            </div>
+        </header>
+
+        <div class="marquee">
+            <div class="marquee-content">
+                ⚠️ WELCOME TO THE KANYE WEST UNRELEASED MUSIC TRACKER! - TRACKING EVERY KNOWN UNRELEASED SONG FROM BEFORE THE COLLEGE DROPOUT TO 808s & HEARTBREAK - LAST UPDATED: FEBRUARY 2026 - NEW LEAKS CONSTANTLY BEING ADDED! ⚠️
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">162</div>
+                <div class="stat-label">TOTAL TRACKS</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">146</div>
+                <div class="stat-label">FULL SONGS</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">29</div>
+                <div class="stat-label">SNIPPETS</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">282</div>
+                <div class="stat-label">CONFIRMED LOST</div>
+            </div>
+        </div>
+
+        <!-- Before The College Dropout Era -->
+        <div class="era-section">
+            <div class="era-title">
+                <span class="icon">💿</span>
+                BEFORE THE COLLEGE DROPOUT
+            </div>
+            <div class="era-dates">
+                📅 (06/08/1977 - 08/18/2002) | Status: 91 Songs Documented
+            </div>
+            <p style="color: #aaa; margin-bottom: 20px;">
+                Before his 2004 debut, Kanye pursued production for JAY-Z, Common, and Talib Kweli, while also working with rap groups like State of Mind and Go Getters. The 2001 demo tape marked a turning point in his solo career.
+            </p>
+
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterSongs('all', this)">ALL</button>
+                <button class="filter-btn" onclick="filterSongs('full', this)">FULL</button>
+                <button class="filter-btn" onclick="filterSongs('snippet', this)">SNIPPETS</button>
+                <button class="filter-btn" onclick="filterSongs('lost', this)">LOST</button>
+            </div>
+
+            <ul class="song-list" id="preCollege">
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">✨</span>
+                        All I Need (with Go Getters)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        feat. Kanye West, Mikkey Halsted, Taji & Miss Criss | prod. AllDay & Kanye West<br>
+                        Track 6 from Go Getters' 1999 compilation "World Record Holders" | Quality: High
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="snippet">
+                    <div class="song-title">
+                        A New State of Mind (with State of Mind)
+                        <span class="status status-snippet">SNIPPET</span>
+                    </div>
+                    <div class="song-details">
+                        prod. Kanye West | Early 1990s demo with Eugene "Frexx" McNair Jr.<br>
+                        Snippet played in Channel 4 documentary "Public Enemies: JAY-Z vs Kanye"
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">⭐</span>
+                        Dream Come True
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Track 12 from 2001 demo tape | Lyrics later reused for "All Falls Down"<br>
+                        Quality: High | Duration: 3:54
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="lost">
+                    <div class="song-title">
+                        <span class="trophy icon">🏅</span>
+                        Green Eggs & Ham (with State of Mind)
+                        <span class="status status-unavailable">LOST</span>
+                    </div>
+                    <div class="song-details">
+                        First studio recorded track, written when Kanye was just 13 years old<br>
+                        According to No I.D.: "real super-early, 90s-sounding, yelling type of hip-hop"
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">⭐</span>
+                        Gotta Pose
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Track 7 from 2001 demo tape | Samples "Get Out of My Life Woman" by Solomon Burke<br>
+                        Quality: High | Duration: 4:24
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        Hey Mama [V1] (feat. John Legend)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Version from 2001 demo tape | More rough than later versions<br>
+                        Quality: High | Duration: 4:24
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        Jesus Walks [V2]
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Track 2 from 2001 demo tape | Originally Rhymefest's song<br>
+                        Quality: High | Duration: 3:32
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">✨</span>
+                        Last Freestyle
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Track 14 from 2001 demo tape | Beat later given to Consequence for "Getting Out The Game"<br>
+                        Lyrics reused on "The Bounce" by JAY-Z and "All Falls Down" | Quality: High
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        Wow [V1]
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Track 5 from 2001 demo tape | Features extra third verse<br>
+                        Lyrics later reused on multiple tracks | Quality: High | Duration: 2:49
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- The College Dropout Era -->
+        <div class="era-section">
+            <div class="era-title">
+                <span class="icon">🎓</span>
+                THE COLLEGE DROPOUT
+            </div>
+            <div class="era-dates">
+                📅 (08/18/2002 - 02/10/2004) | Status: 115 Songs Documented
+            </div>
+            <p style="color: #aaa; margin-bottom: 20px;">
+                Kanye's groundbreaking debut featuring soul samples and "chipmunk soul" production. Themes of family, materialism, religion, and racism. Inspiration came after a near-fatal car crash in 2002.
+            </p>
+
+            <ul class="song-list">
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">✨</span>
+                        Self Conscious [V2] (All Falls Down)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Early College Dropout copy | Completely new first verse, alternate beat<br>
+                        Lyrics reused from "Dream Come True" | Quality: CD | Duration: 3:36
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">✨</span>
+                        Drug Dealin' [V2] (feat. GLC & Keyshia Cole)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Original "We Don't Care" with rougher vocals, Keyshia Cole and GLC verse<br>
+                        Quality: High | Duration: 3:53
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">⭐</span>
+                        Home [V2] (feat. John Legend)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Early College Dropout version | Better mix, longer outro<br>
+                        Lyrics later used for "Homecoming" on Graduation | Quality: CD | Duration: 4:02
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">⭐</span>
+                        I Need To Know [V3]
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Later version from early College Dropout | Shares lines with "Together They're Tens"<br>
+                        Lines later reused on "Late" | Quality: CD | Duration: 3:54
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        Improvise (Apologize)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Featured on early College Dropout versions | Beat later used on Monica's "Knock Knock"<br>
+                        Samples "It's A Terrible Thing To Waste Your Love" | Quality: High | Duration: 4:22
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">⭐</span>
+                        Livin' A Movie Pt. 1
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Early College Dropout version | Samples "In The Hour" by Melanie<br>
+                        Kanye mentions "this only part 1" | Quality: High | Duration: 2:12
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="snippet">
+                    <div class="song-title">
+                        <span class="trophy icon">🏆</span>
+                        Livin' A Movie Pt. 2
+                        <span class="status status-snippet">SNIPPET</span>
+                    </div>
+                    <div class="song-details">
+                        Different beat and bars than Pt. 1 | Only studio video exists<br>
+                        Lyrics later used on "The Glory" and "POWER" | Duration: 3:38
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">⭐</span>
+                        Niggas Gossip (Dreamkillers)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Early College Dropout version | Samples "Me and You" by Belle Epoques<br>
+                        Lines later reused on "School Spirit" and "New Slaves" | Quality: High
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">✨</span>
+                        Whole Life [V2] (feat. Newz)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Early College Dropout version | Newz background vocals + unknown female artist<br>
+                        Samples "Don't Burn Down The Bridge" by Gladys Knight | Quality: CD | Duration: 2:47
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Late Registration Era -->
+        <div class="era-section">
+            <div class="era-title">
+                <span class="icon">🎹</span>
+                LATE REGISTRATION
+            </div>
+            <div class="era-dates">
+                📅 (02/10/2004 - 08/30/2005) | Status: 65 Songs Documented
+            </div>
+            <p style="color: #aaa; margin-bottom: 20px;">
+                Orchestral production influenced by co-producer Jon Brion. Mixed chipmunk soul with lullaby-like instrumentals. Inspiration from Portishead and Fiona Apple's "When The Pawn..."
+            </p>
+
+            <ul class="song-list">
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        Bittersweet [V2] (feat. John Mayer & Keyshia Cole)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Original version with flute and different mixing | Very similar to V1<br>
+                        Quality: High | Duration: 4:10
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="snippet">
+                    <div class="song-title">
+                        Celebration
+                        <span class="status status-snippet">SNIPPET</span>
+                    </div>
+                    <div class="song-details">
+                        Early version performed live June 2004 | Alternate instrumental and lyrics<br>
+                        Quality: Recording
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="snippet">
+                    <div class="song-title">
+                        Diamonds [V2] (Born To Lose)
+                        <span class="status status-snippet">SNIPPET</span>
+                    </div>
+                    <div class="song-details">
+                        Alternate bars and different beat | Snippet origin found December 2023<br>
+                        Quality: Recording
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="lost">
+                    <div class="song-title">
+                        Gold Digger [V2-V4] (18 Years)
+                        <span class="status status-unavailable">LOST</span>
+                    </div>
+                    <div class="song-details">
+                        Ray Charles sample version | John Legend vocals version | Jamie Foxx alternates<br>
+                        Multiple takes and configurations exist
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="partial">
+                    <div class="song-title">
+                        Gone [V2] (feat. Rhymefest)
+                        <span class="status status-partial">PARTIAL</span>
+                    </div>
+                    <div class="song-details">
+                        Version with Rhymefest verse not in final | Has fade out ending<br>
+                        Quality: High | Duration: 3:07
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="snippet">
+                    <div class="song-title">
+                        Hey Mama [V4] (feat. John Legend)
+                        <span class="status status-snippet">SNIPPET</span>
+                    </div>
+                    <div class="song-details">
+                        Different mix than final version | Leaked May 2021<br>
+                        Quality: High
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="snippet">
+                    <div class="song-title">
+                        Promised Land Pt.1 (feat. Malik Yusef & Tony Williams)
+                        <span class="status status-snippet">SNIPPET</span>
+                    </div>
+                    <div class="song-details">
+                        Track 1 on early Late Registration tracklist<br>
+                        Later retooled for Malik Yusef's album with Adam Levine | Quality: Low
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">✨</span>
+                        You Again [V2] (ref. Tony Williams) - We Major
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Tony Williams reference track | Different lyrics throughout<br>
+                        Different drums, less grand than release | Quality: CD | Duration: 4:18
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        Touch The Sky [V2] (feat. Robert Glasper)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Original version before Lupe Fiasco | Drums by Questlove, piano by Robert Glasper<br>
+                        Played on Q-Tip's "Abstract Radio" Dec 2015 | Quality: High
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Graduation Era -->
+        <div class="era-section">
+            <div class="era-title">
+                <span class="icon">🌟</span>
+                GRADUATION
+            </div>
+            <div class="era-dates">
+                📅 (08/30/2005 - 09/11/2007) | Status: 105 Songs Documented
+            </div>
+            <p style="color: #aaa; margin-bottom: 20px;">
+                Electronic sound with layered synthesizers. Inspiration from stadium tours, indie rock, and house music. Departure from soul samples toward stadium anthem production.
+            </p>
+
+            <ul class="song-list">
+                <li class="song-item" data-status="snippet">
+                    <div class="song-title">
+                        <span class="trophy icon">🏅</span>
+                        Ayyyy [V1] (Ayyy Girl)
+                        <span class="status status-snippet">SNIPPET</span>
+                    </div>
+                    <div class="song-details">
+                        ~1:20 finished first verse with no mumble | Eventually given to JYJ<br>
+                        Uses "Alligator Boots" beat | Snippets leaked June 2024, May 2025, Dec 2025
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        Barry Bonds [V3] (feat. Lil Wayne)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Early version with different instrumental, alternate lyrics, worse mixing<br>
+                        Open verse at end | Quality: CD | Duration: 3:43 | Leaked Mar 21, 2022
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        Story Begins [V1] (Big Brother)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Demo with Prince interpolation "It's Gonna Be Lonely" and mumble lyrics<br>
+                        Quality: Lossless | Duration: 4:51 | Leaked Mar 21, 2022
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">⭐</span>
+                        Building (feat. JAY-Z)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Complete Graduation-era song | Complete verses from Kanye and JAY-Z, open verse<br>
+                        Interpolates "Baby Come Home" by Willie Hutch | Quality: Lossless | Duration: 4:03
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">✨</span>
+                        Got Money [V3] (feat. Jeezy) - Can't Tell Me Nothing
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Demo with alternate instrumental and Jeezy feature<br>
+                        Quality: High | Duration: 4:05 | Leaked Mar 21, 2022
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="snippet">
+                    <div class="song-title">
+                        Champion [V1] (feat. Connie Mitchell)
+                        <span class="status status-snippet">SNIPPET</span>
+                    </div>
+                    <div class="song-details">
+                        Earlier production with "African sounds and percussion"<br>
+                        Still has Connie Mitchell | ~7:00 duration | Snippet leaked Nov 21, 2024
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="snippet">
+                    <div class="song-title">
+                        <span class="trophy icon">🏆</span>
+                        Champion [V3]
+                        <span class="status status-snippet">SNIPPET</span>
+                    </div>
+                    <div class="song-details">
+                        Two completely different finished verses | Lyrics posted on kanyeuniversecity<br>
+                        Verse reused from "Ready To Go" by Scratch | Snippets leaked Nov 2024, Feb 2025
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        Drunk N Hot Girls [V3]
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Early version with mumble vocals and simplistic production<br>
+                        Quality: Lossless | Duration: 4:35 | Date: Feb 24, 2007 | Leaked Mar 21, 2022
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">✨</span>
+                        Good Life [V8] (feat. T-Pain)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Alternate instrumental with different drums, extended intro<br>
+                        Played in movie "Entourage" | Quality: Lossless | Duration: 3:58
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        Morning [V1] (Good Morning)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Older version with rougher vocals, stripped back production<br>
+                        Quality: High | Duration: 4:12 | Date: May 6, 2006
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        Goodbye [V4] (feat. Mos Def & Albe Back) - Good Night
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Earlier version with alternate lyrics, different instrumental<br>
+                        Quality: Lossless | Duration: 3:23 | Date: Feb 17, 2007
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">✨</span>
+                        Homecoming [V2] (feat. Chris Martin & Tony Williams)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Early version with extra Tony Williams vocals, unused production<br>
+                        Quality: Lossless | Duration: 3:28 | Date: Aug 2, 2007
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">✨</span>
+                        Piano [V1] (Passenger)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Early Graduation freestyle | 4 finished bars, rest is mumble<br>
+                        Samples "Here's Where I Came In" by Weldon Irvine | Quality: Lossless | Duration: 3:48
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">✨</span>
+                        Stronger [V7]
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Early mix with unreleased verse | Tagged for Cassie<br>
+                        Over 50 versions of "Stronger" exist | Quality: CD | Duration: 3:04
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">✨</span>
+                        Thank God [V2]
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Early Graduation instrumental | Title seen in "Good Morning" music video<br>
+                        Slightly alternate production | Quality: CD | Duration: 2:54 | Date: Mar 17, 2007
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">✨</span>
+                        To Me
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Early Graduation instrumental | ~1:30 mumble vocals recorded over it<br>
+                        Samples "I Don't Wanna Cry" by The After Hours | Quality: Lossless | Duration: 2:55
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 808s & Heartbreak Era -->
+        <div class="era-section">
+            <div class="era-title">
+                <span class="icon">💔</span>
+                808s & HEARTBREAK
+            </div>
+            <div class="era-dates">
+                📅 (09/11/2007 - 11/24/2008) | Status: 135 Songs Documented
+            </div>
+            <p style="color: #aaa; margin-bottom: 20px;">
+                Following his mother's death and breakup with Alexis Phifer, Kanye created a stripped-down album dominated by the Roland TR-808 drum machine and Auto-Tune. This album significantly influenced future hip-hop artists including Drake, Future, and Travis Scott.
+            </p>
+
+            <ul class="song-list">
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        <span class="star icon">✨</span>
+                        Amazing [V3] (ref. The-Dream)
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        The-Dream reference track | Leaked via unofficial mixtape "LoveTape: The Demo's"<br>
+                        Quality: CD | Duration: 3:53
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="full">
+                    <div class="song-title">
+                        Anyway [V1] (feat. Kid Cudi) - Paranoid
+                        <span class="status status-full">FULL</span>
+                    </div>
+                    <div class="song-details">
+                        Early version with mumble Kanye vocals, no Mr Hudson on chorus<br>
+                        Quality: Lossless | Duration: 4:41 | Leaked Feb 2, 2024
+                    </div>
+                </li>
+
+                <li class="song-item" data-status="lost">
+                    <div class="song-title">
+                        Anyway [V2-V4] (ref. Consequence)
+                        <span class="status status-confirmed">CONFIRMED</span>
+                    </div>
+                    <div class="song-details">
+                        Multiple versions with Consequence vocals | Possibly without Kanye<br>
+                        Filenames: "ANYWAY QUENCE RUFF 02", "ANYWAY QUENCE RUFF 03", "ANYWAY CUDDI RUFF 04"
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>⚡ KANYE WEST TRACKER ⚡</p>
+            <p style="margin-top: 10px;">Last Updated: February 2026 | Data compiled from various sources</p>
+            <p style="margin-top: 10px; color: #555;">This site is a fan-made archive for educational purposes</p>
+            <p style="margin-top: 20px;">
+                <a href="#top">↑ BACK TO TOP ↑</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        function filterSongs(status, button) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            const items = document.querySelectorAll('.song-item');
+            items.forEach(item => {
+                if (status === 'all') {
+                    item.style.display = 'block';
+                } else {
+                    const itemStatus = item.getAttribute('data-status');
+                    item.style.display = itemStatus === status ? 'block' : 'none';
+                }
+            });
+        }
+
+        // Blinking cursor effect for title
+        setInterval(() => {
+            const h1 = document.querySelector('h1');
+            h1.style.textShadow = h1.style.textShadow === '2px 2px #ff0000' 
+                ? '2px 2px #00ff00' 
+                : '2px 2px #ff0000';
+        }, 1000);
+    </script>
+</body>
+</html>
